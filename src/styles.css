@@ -1,0 +1,511 @@
+/* Main Application Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #e0e0e0;
+    background-color: #1e2130;
+  }
+  
+  .app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  /* Navbar Styles */
+  .navbar {
+    background-color: #111827;
+    color: #fff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .navbar-logo h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  
+  .navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .username {
+    font-weight: 500;
+    color: #fff;
+  }
+  
+  .logout-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+  }
+  
+  .logout-button:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Loading and Error States */
+  .loading-screen, .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 1.2rem;
+    color: #a0a0a0;
+  }
+  
+  .error-message {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: #ff6b6b;
+    padding: 15px;
+    border-radius: 4px;
+    margin: 20px 0;
+    border: 1px solid rgba(220, 53, 69, 0.3);
+  }
+  
+  /* Login Form Styles */
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+  }
+  
+  .login-form-wrapper {
+    background-color: #2d3348;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .login-form-wrapper h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #fff;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .form-group label {
+    font-weight: 500;
+    color: #b0b0b0;
+  }
+  
+  .form-group input {
+    padding: 12px;
+    border: 1px solid #3f4868;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #252a3d;
+    color: #e0e0e0;
+  }
+  
+  .login-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+  
+  .login-button:hover {
+    background-color: #2980b9;
+  }
+  
+  .login-button:disabled {
+    background-color: #4a5568;
+    cursor: not-allowed;
+  }
+  
+  /* Profile Styles */
+  .profile-container {
+    background-color: #2d3348;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+  
+  .profile-header {
+    padding: 30px;
+    background-color: #1a73e8;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .avatar-letter {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1a73e8;
+  }
+  
+  .profile-info h2 {
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    color: #fff;
+  }
+  
+  .profile-stats {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .stat-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    color: #e0e0e0;
+  }
+  
+  .stat-value {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #fff;
+  }
+  
+  .profile-content {
+    padding: 30px;
+  }
+  
+  .profile-section {
+    margin-bottom: 40px;
+  }
+  
+  .profile-section h3 {
+    color: #fff;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #3f4868;
+    padding-bottom: 10px;
+  }
+  
+  /* Skills Styles */
+  .skills-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .skill-item {
+    background-color: #222639;
+    border-radius: 6px;
+    padding: 15px;
+    border: 1px solid #3f4868;
+  }
+  
+  .skill-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  
+  .skill-name {
+    font-weight: 500;
+    color: #fff;
+  }
+  
+  .skill-level {
+    color: #b0b0b0;
+    font-size: 0.9rem;
+  }
+  
+  .skill-progress-container {
+    height: 8px;
+    background-color: #3f4868;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  
+  .skill-progress-bar {
+    height: 100%;
+    background-color: #4CAF50;
+  }
+  
+  .skill-xp {
+    text-align: right;
+    font-size: 0.9rem;
+    color: #b0b0b0;
+  }
+  
+  /* XP Table Styles */
+  .xp-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .xp-table th,
+  .xp-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #3f4868;
+  }
+  
+  .xp-table th {
+    font-weight: 600;
+    color: #b0b0b0;
+    background-color: #222639;
+  }
+  
+  .xp-table tr:hover {
+    background-color: #2c304d;
+  }
+  
+  /* Graph Styles */
+  .graphs-section {
+    margin-top: 50px;
+  }
+  
+  .graphs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
+  
+  .graph-container {
+    background-color: #222639;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #3f4868;
+    overflow: auto;
+  }
+  
+  .graph-container h3 {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 20px;
+    border-bottom: none;
+  }
+  
+  .graph-title {
+    font-size: 18px;
+    font-weight: bold;
+    fill: #fff;
+  }
+  
+  .axis-label {
+    font-size: 12px;
+    fill: #b0b0b0;
+  }
+  
+  .xp-line {
+    transition: stroke-width 0.2s;
+    stroke: #4CAF50 !important;
+  }
+  
+  .xp-line:hover {
+    stroke-width: 4;
+  }
+  
+  .data-point {
+    cursor: pointer;
+    transition: r 0.2s;
+    fill: #4CAF50;
+  }
+  
+  .data-point:hover {
+    r: 6;
+  }
+  
+  /* Add specific styling for the XP Progress Over Time graph */
+  .xp-graph text {
+    fill: #b0b0b0;  /* Lighter color for better contrast */
+    font-size: 12px;
+  }
+  
+  .xp-graph .graph-title {
+    fill: #ffffff;  /* White for the title */
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .xp-graph .axis-label {
+    fill: #d0d0d0;  /* Brighter color for axis labels */
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .xp-graph path {
+    stroke: #4CAF50;
+    stroke-width: 3;
+  }
+  
+  .xp-graph line {
+    stroke: #555b73;  /* Darker grid lines */
+  }
+  
+  .xp-graph circle {
+    fill: #4CAF50;
+  }
+  
+  /* Tooltip styling */
+  .tooltip rect {
+    fill: rgba(40, 44, 63, 0.9);
+    stroke: #4CAF50;
+    stroke-width: 1;
+  }
+  
+  .tooltip text {
+    fill: #ffffff;
+    font-size: 12px;
+  }
+  
+  /* Project Ratio Graph Styles */
+  .project-ratio-container {
+    margin-top: 30px;
+  }
+  
+  .project-ratio-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .project-ratio-graph {
+    flex: 0 0 100%;
+  }
+  
+  .pie-slice {
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .pie-label {
+    font-size: 14px;
+    fill: #ffffff;
+    font-weight: 500;
+  }
+  
+  .legend-text {
+    font-size: 14px;
+    fill: #b0b0b0;
+  }
+  
+  .total-count {
+    font-size: 14px;
+    fill: #b0b0b0;
+  }
+  
+  .total-count-number {
+    fill: #ffffff;
+  }
+  
+  .projects-list {
+    background-color: #2c304d;
+    border-radius: 6px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    margin: 20px auto;
+    color: #e0e0e0;
+  }
+  
+  .projects-list h4 {
+    margin-bottom: 10px;
+    color: #fff;
+  }
+  
+  .projects-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .projects-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #3f4868;
+    color: #b0b0b0;
+  }
+  
+  .projects-list li:last-child {
+    border-bottom: none;
+  }
+  
+  /* Footer Styles */
+  .footer {
+    background-color: #111827;
+    color: #b0b0b0;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .profile-header {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .profile-stats {
+      justify-content: center;
+    }
+    
+    .skills-container {
+      grid-template-columns: 1fr;
+    }
+    
+    .graphs-container {
+      overflow-x: auto;
+    }
+  }

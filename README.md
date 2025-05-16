@@ -1,180 +1,171 @@
-# GraphQL Profile Project
+# GraphQL Profile Project Documentation
 
-This project is a user profile page built using GraphQL to display school information from the platform's API. It includes authentication, data visualization, and interactive components.
+## Project Overview
+This project creates a personal profile dashboard that visualizes my school journey using GraphQL queries to fetch my educational data. It features a secure login system, displays key metrics, and presents interactive data visualizations using SVG.
 
-## Features
+## Live Demo
+The project is deployed and accessible at: [https://myusuf-graphql.netlify.app](https://myusuf-graphql.netlify.app)
 
-- **JWT Authentication**: Secure login with username/email and password
-- **User Profile Display**: Shows basic user information
-- **XP Statistics**: Visual representation of XP earned over time
-- **Project Analysis**: Pass/Fail ratio and project performance
-- **Skills Display**: Visualization of user's skills based on XP
-- **Interactive SVG Graphs**: Data visualization using SVG
-- **Responsive Design**: Works across various device sizes
+## Features Implemented
 
-## Technology Stack
+### 1. Authentication System
+- Secure login with JWT token authentication
+- Support for both username:password and email:password login methods
+- Error handling for invalid credentials
+- Logout functionality
 
-- React.js for the frontend UI
-- GraphQL for data fetching
+### 2. Profile Information Display
+The profile displays three key pieces of information as required:
+
+**User Identification**
+- Username display with personalized welcome message
+- Avatar representation using first letter of username
+- Basic user information from GraphQL user queries
+
+**XP Information**
+- Total XP earned throughout the program
+- XP distribution by project/module
+- Visual representation of XP accumulation over time
+
+**Project/Grade Information**
+- Total number of projects completed
+- Success rate percentage
+- Detailed breakdown of passed vs. failed projects
+
+### 3. SVG Statistical Visualizations
+I've implemented two interactive SVG-based visualizations:
+
+**XP Progress Over Time Graph**
+- Line chart showing XP accumulation throughout my journey
+- Interactive data points with tooltips showing:
+  - Date of XP earned
+  - Amount of XP for that transaction
+  - Total XP at that point
+- Responsive scaling to accommodate different time periods
+- Visual indicators for significant XP gains
+
+**Project Success Ratio Graph**
+- Interactive pie chart showing pass/fail ratio
+- Click functionality to display detailed lists of projects
+- Animated segments for better visualization
+- Color-coded for easy interpretation (green for passed, red for failed)
+
+## GraphQL Implementation
+The project demonstrates all three required types of GraphQL querying:
+
+### 1. Basic Queries
+Fetching user information:
+```graphql
+query GetUser {
+  user {
+    id
+    login
+  }
+}
+```
+
+### 2. Nested Queries
+Fetching project data with related object information:
+```graphql
+query GetUserProgress {
+  progress {
+    id
+    objectId
+    grade
+    createdAt
+    path
+    object {
+      name
+      type
+    }
+  }
+}
+```
+
+### 3. Queries with Arguments
+Fetching specific object details:
+```graphql
+query GetObject($objectId: Int!) {
+  object(where: {id: {_eq: $objectId}}) {
+    id
+    name
+    type
+    attrs
+  }
+}
+```
+
+## Technical Implementation
+
+### Authentication Flow
+1. User submits credentials (username/email and password)
+2. Credentials are encoded and sent to the authentication endpoint
+3. JWT token is received and stored in localStorage
+4. Token is used for authorization in GraphQL requests
+5. User ID is extracted from the token for data fetching
+
+### Data Visualization Approach
+- Custom SVG elements for all visualizations
+- Manually calculated scales and coordinates for precise control
+- Interactive elements implemented with React state management
+- Responsive design principles for cross-device compatibility
+
+### Styling
+- Dark-themed UI for reduced eye strain
+- High contrast colors for accessibility
+- Responsive layout for various screen sizes
+- Consistent visual language across the application
+
+## Running the Project Locally
+
+1. Clone the repository:
+```
+git clone https://learn.reboot01.com/git/myusuf/graphql
+cd graphql
+```
+
+2. Install dependencies:
+```
+npm install
+```
+
+3. Start the development server:
+```
+npm start
+```
+
+4. Open your browser and navigate to `http://localhost:3000`
+
+5. Login with your credentials to view your profile
+
+## Technologies Used
+- React for the UI components
 - JWT for authentication
+- GraphQL for data fetching
 - SVG for interactive data visualization
-- CSS for styling
+- Custom CSS for styling
 
 ## Project Structure
-
 ```
-/graphql-profile
+/graphql
   ├── /public
   │   ├── index.html
   │   ├── favicon.ico
   ├── /src
   │   ├── /components
-  │   │   ├── Login.js      # Login form with authentication
-  │   │   ├── Profile.js    # Main profile display
-  │   │   ├── Navbar.js     # Navigation bar with logout
+  │   │   ├── Login.js
+  │   │   ├── Profile.js
+  │   │   ├── Navbar.js
   │   │   ├── /graphs
-  │   │   │   ├── XpOverTime.js        # SVG graph for XP over time
-  │   │   │   ├── ProjectsRatio.js     # SVG graph for project ratios
+  │   │   │   ├── XpOverTime.js
+  │   │   │   ├── ProjectsRatio.js
   │   ├── /services
-  │   │   ├── auth.service.js          # Authentication functions
-  │   │   ├── graphql.service.js       # GraphQL query functions
-  │   ├── /utils
-  │   │   ├── jwtDecoder.js            # JWT handling utilities
-  │   ├── App.js                       # Main application component
-  │   ├── index.js                     # Application entry point
-  │   ├── styles.css                   # Global styles
-  ├── package.json
-  ├── README.md
+  │   │   ├── auth.service.js
+  │   │   ├── graphql.service.js
+  │   ├── App.js
+  │   ├── index.js
+  │   ├── styles.css
 ```
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v14 or later)
-- npm or yarn
-
-### Installation
-
-1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/graphql-profile.git
-   cd graphql-profile
-   ```
-
-2. Install dependencies:
-   ```
-   npm install
-   ```
-
-3. Update the GraphQL endpoint and authentication URLs:
-   - Open `src/services/auth.service.js` and update the authentication URL
-   - Open `src/services/graphql.service.js` and update the GraphQL endpoint
-
-4. Start the development server:
-   ```
-   npm start
-   ```
-
-### Building for Production
-
-To create a production build:
-```
-npm run build
-```
-
-The build will be created in the `build` folder.
-
-## Deployment
-
-This project can be deployed on various platforms:
-
-### GitHub Pages
-
-1. Install the gh-pages package:
-   ```
-   npm install --save-dev gh-pages
-   ```
-
-2. Add the following to `package.json`:
-   ```json
-   "homepage": "https://yourusername.github.io/graphql-profile",
-   "scripts": {
-     "predeploy": "npm run build",
-     "deploy": "gh-pages -d build",
-     ...
-   }
-   ```
-
-3. Deploy:
-   ```
-   npm run deploy
-   ```
-
-### Netlify
-
-1. Create a `netlify.toml` file in the project root:
-   ```toml
-   [build]
-     command = "npm run build"
-     publish = "build"
-     
-   [[redirects]]
-     from = "/*"
-     to = "/index.html"
-     status = 200
-   ```
-
-2. Deploy using the Netlify CLI or connect your GitHub repository to Netlify.
-
-## GraphQL Queries
-
-This project uses the following GraphQL queries:
-
-- User information: Gets basic user details
-- XP transactions: Retrieves all XP earned by the user
-- Projects progress: Gets the user's progress on projects
-- Project results: Gets the results of completed projects
-
-## Authentication
-
-The application uses JWT-based authentication. The token is obtained by sending a POST request to the authentication endpoint with Basic authentication credentials. The JWT is then stored in local storage and used for all subsequent GraphQL requests.
-
-## Data Visualization
-
-### XP Over Time Graph
-- Interactive SVG line chart showing XP accumulation over time
-- Tooltips display detailed information on hover
-- X-axis shows dates, Y-axis shows XP amounts
-- Highlights user's progression through the curriculum
-
-### Project Pass/Fail Ratio
-- Interactive SVG pie chart showing the ratio of passed vs failed projects
-- Click on segments to see detailed project lists
-- Animated transitions for better user experience
-- Provides insight into overall project performance
-
-## Customization
-
-You can customize the profile page by modifying the following files:
-- `src/styles.css`: Change colors, fonts, and layout
-- `src/components/Profile.js`: Add or remove profile sections
-- `src/components/graphs/`: Add new visualization components
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- This project was created as part of a learning exercise for GraphQL
-- SVG visualization techniques inspired by D3.js documentation
-- Profile design elements based on modern UI/UX practices
+## Conclusion
+This project successfully demonstrates the use of GraphQL to create a profile page that visualizes my educational journey. Through interactive SVG visualizations, I've been able to present my progress and achievements in an engaging and informative way.

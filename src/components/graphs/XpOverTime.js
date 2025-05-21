@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from 'react';
+import { formatBytes } from '../../utils/formatBytes';
 
 const XpOverTimeGraph = ({ xpData }) => {
   const [totalPoints, setTotalPoints] = useState([]);
   const [tooltipData, setTooltipData] = useState({ visible: false, x: 0, y: 0, data: null });
-  
+
   // Graph dimensions
   const width = 800;
   const height = 400;
   const padding = { top: 40, right: 40, bottom: 80, left: 70 }; // Increased bottom padding
   const graphWidth = width - padding.left - padding.right;
   const graphHeight = height - padding.top - padding.bottom;
-  
+
   useEffect(() => {
     if (!xpData || xpData.length === 0) return;
-    
+
     // Process XP data to create cumulative points
     const processedData = xpData.reduce((acc, transaction, index) => {
       const date = new Date(transaction.createdAt);
       const prevTotal = index > 0 ? acc[index - 1].totalXp : 0;
       const totalXp = prevTotal + transaction.amount;
-      
+
       acc.push({
         id: transaction.id,
         date,
@@ -27,65 +28,65 @@ const XpOverTimeGraph = ({ xpData }) => {
         totalXp,
         path: transaction.path,
       });
-      
+
       return acc;
     }, []);
-    
+
     setTotalPoints(processedData);
   }, [xpData]);
-  
+
   // Calculate scales
   const getScales = () => {
     if (totalPoints.length === 0) return { xScale: () => 0, yScale: () => 0 };
-    
+
     const xMin = totalPoints[0].date;
     const xMax = totalPoints[totalPoints.length - 1].date;
     const yMax = totalPoints[totalPoints.length - 1].totalXp;
-    
+
     const xScale = (date) => {
       const timeRange = xMax.getTime() - xMin.getTime();
       const percentage = (date.getTime() - xMin.getTime()) / timeRange;
       return padding.left + percentage * graphWidth;
     };
-    
+
     const yScale = (value) => {
       return padding.top + graphHeight - (value / yMax) * graphHeight;
     };
-    
+
     return { xScale, yScale };
   };
-  
+
   const { xScale, yScale } = getScales();
-  
+
   // Generate path for the line
   const generatePath = () => {
     if (totalPoints.length === 0) return '';
-    
+
     let pathData = `M ${xScale(totalPoints[0].date)} ${yScale(totalPoints[0].totalXp)}`;
-    
+
     for (let i = 1; i < totalPoints.length; i++) {
       pathData += ` L ${xScale(totalPoints[i].date)} ${yScale(totalPoints[i].totalXp)}`;
     }
-    
+
     return pathData;
   };
-  
+
   // Generate axes
   const generateAxes = () => {
     if (totalPoints.length === 0) return { xAxisPoints: [], yAxisPoints: [] };
-    
+
     // X-axis: dates - reduce number of labels to prevent overcrowding
     const monthSet = new Set();
     const xAxisPoints = [];
-    
+
     // Calculate approx number of labels that would fit without overlapping
     const maxLabels = Math.floor(graphWidth / 100);
     const skipFactor = Math.ceil(totalPoints.length / maxLabels);
-    
+
     totalPoints.forEach((point, index) => {
       // Only show labels at intervals to prevent overcrowding
       if (index % skipFactor !== 0) return;
-      
+
       const monthYear = `${point.date.getMonth() + 1}/${point.date.getFullYear()}`;
       if (!monthSet.has(monthYear)) {
         monthSet.add(monthYear);
@@ -95,25 +96,25 @@ const XpOverTimeGraph = ({ xpData }) => {
         });
       }
     });
-    
+
     // Y-axis: XP values
     const yMax = totalPoints[totalPoints.length - 1].totalXp;
     const yStep = Math.ceil(yMax / 5 / 1000) * 1000;
     const yAxisPoints = [];
-    
+
     for (let i = 0; i <= 5; i++) {
       const value = i * yStep;
       yAxisPoints.push({
         y: yScale(value),
-        label: `${value.toLocaleString()} XP`
+        label: `${formatBytes(value)}`
       });
     }
-    
+
     return { xAxisPoints, yAxisPoints };
   };
-  
+
   const { xAxisPoints, yAxisPoints } = generateAxes();
-  
+
   // Handle mouse hover for tooltips
   const handleMouseOver = (point, index) => {
     setTooltipData({
@@ -128,15 +129,15 @@ const XpOverTimeGraph = ({ xpData }) => {
       }
     });
   };
-  
+
   const handleMouseOut = () => {
     setTooltipData({ ...tooltipData, visible: false });
   };
-  
+
   if (totalPoints.length === 0) {
     return <div>Loading XP data...</div>;
   }
-  
+
   return (
     <div className="graph-container">
       <h3>XP Progress Over Time</h3>
@@ -145,7 +146,7 @@ const XpOverTimeGraph = ({ xpData }) => {
         <text x={width / 2} y={20} textAnchor="middle" className="graph-title">
           XP Earned Over Time
         </text>
-        
+
         {/* X-axis */}
         <line
           x1={padding.left}
@@ -155,7 +156,7 @@ const XpOverTimeGraph = ({ xpData }) => {
           stroke="#555b73"
           strokeWidth="2"
         />
-        
+
         {/* X-axis labels */}
         {xAxisPoints.map((point, i) => (
           <g key={i}>
@@ -180,7 +181,7 @@ const XpOverTimeGraph = ({ xpData }) => {
             </text>
           </g>
         ))}
-        
+
         {/* Y-axis */}
         <line
           x1={padding.left}
@@ -190,7 +191,7 @@ const XpOverTimeGraph = ({ xpData }) => {
           stroke="#555b73"
           strokeWidth="2"
         />
-        
+
         {/* Y-axis labels */}
         {yAxisPoints.map((point, i) => (
           <g key={i}>
@@ -211,7 +212,7 @@ const XpOverTimeGraph = ({ xpData }) => {
             >
               {point.label}
             </text>
-            
+
             {/* Grid line */}
             <line
               x1={padding.left}
@@ -223,7 +224,7 @@ const XpOverTimeGraph = ({ xpData }) => {
             />
           </g>
         ))}
-        
+
         {/* The XP line */}
         <path
           d={generatePath()}
@@ -232,7 +233,7 @@ const XpOverTimeGraph = ({ xpData }) => {
           strokeWidth="3"
           className="xp-line"
         />
-        
+
         {/* Data points */}
         {totalPoints.map((point, index) => (
           <circle
@@ -246,7 +247,7 @@ const XpOverTimeGraph = ({ xpData }) => {
             className="data-point"
           />
         ))}
-        
+
         {/* Tooltip */}
         {tooltipData.visible && tooltipData.data && (
           <g className="tooltip">
@@ -264,10 +265,10 @@ const XpOverTimeGraph = ({ xpData }) => {
               Date: {tooltipData.data.date}
             </text>
             <text x={tooltipData.x + 20} y={tooltipData.y - 30} fill="white" fontWeight="500">
-              XP Earned: {tooltipData.data.xp.toLocaleString()}
+              XP Earned: {formatBytes(tooltipData.data.xp)}
             </text>
             <text x={tooltipData.x + 20} y={tooltipData.y - 10} fill="white" fontWeight="500">
-              Total XP: {tooltipData.data.totalXp.toLocaleString()}
+              Total XP: {formatBytes(tooltipData.data.totalXp)}
             </text>
           </g>
         )}
